@@ -10,7 +10,7 @@ WORKDIR /app
 COPY backend/package*.json ./
 COPY backend/prisma ./prisma/
 
-RUN npm ci
+RUN npm install
 
 # Generate Prisma client
 RUN npx prisma generate
@@ -32,7 +32,7 @@ RUN addgroup -g 1001 -S nodejs && \
 
 # Copy production dependencies
 COPY backend/package*.json ./
-RUN npm ci --only=production
+RUN npm install --only=production
 
 # Copy Prisma and generate
 COPY backend/prisma ./prisma/
