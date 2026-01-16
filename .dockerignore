@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+**/node_modules/
+npm-debug.log*
+
+# Build outputs
+dist/
+**/dist/
+
+# Environment files
+.env
+**/.env
+.env.*
+
+# Dev files
+*.log
+*.md
+.git/
+.gitignore
+
+# Database files
+*.db
+*.sqlite
+**/dev.db
+
+# IDE
+.vscode/
+.idea/
+
+# Extension (not needed for backend)
+extension/
+
+# Test files
+*.test.ts
+*.spec.ts
+__tests__/
+**/scripts/
