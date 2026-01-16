@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Build outputs (we rebuild in container)
+dist/
+
+# Environment files (secrets should be in Railway)
+.env
+.env.*
+
+# Development files
+*.log
+*.md
+.git/
+.gitignore
+
+# Database files (use external PostgreSQL)
+*.db
+*.sqlite
+dev.db
+
+# IDE
+.vscode/
+.idea/
+
+# Test files
+*.test.ts
+*.spec.ts
+__tests__/
+
+# Scripts (not needed in production)
+src/scripts/

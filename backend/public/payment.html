@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment | VogueFit</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --bg: #0f172a;
+            --card-bg: #1e1b4b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 440px;
+            padding: 2.5rem;
+            background: var(--card-bg);
+            border-radius: 2rem;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(139, 92, 246, 0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            border-radius: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .status-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .success-icon {
+            color: #10b981;
+        }
+
+        .error-icon {
+            color: #ef4444;
+        }
+
+        /* Background blur effects */
+        .blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            filter: blur(120px);
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .blob-1 {
+            top: -100px;
+            left: -100px;
+        }
+
+        .blob-2 {
+            bottom: -100px;
+            right: -100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="container" id="loading-view">
+        <div class="logo">VogueFit</div>
+        <div class="loader"></div>
+        <h1>Initializing Secure Checkout</h1>
+        <p>Connecting to our payment partner. Please do not refresh the page.</p>
+    </div>
+
+    <div class="container" id="error-view" style="display: none;">
+        <div class="logo">VogueFit</div>
+        <span class="status-icon error-icon">✕</span>
+        <h1>Payment Failed</h1>
+        <p id="error-msg">The transaction could not be completed at this time.</p>
+        <button class="btn" onclick="location.reload()">Try Again</button>
+    </div>
+
+    <div class="container" id="success-view" style="display: none;">
+        <div class="logo">VogueFit</div>
+        <span class="status-icon success-icon">✓</span>
+        <h1>Payment Successful!</h1>
+        <p>Your credits have been added to your wallet. You can resume scanning in the extension.</p>
+        <button class="btn" onclick="window.close()">Back to Extension</button>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+
+        async function init() {
+            const params = new URLSearchParams(window.location.search);
+            const userId = params.get('userId');
+            const packId = params.get('packId') || 'STARTER';
+
+            if (!userId) {
+                showError('User ID is missing. Please restart the checkout from the extension.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/payment/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, packId })
+                });
+                const data = await res.json();
+
+                if (!data.success) throw new Error(data.error || 'Failed to create order');
+
+                const options = {
+                    key: data.keyId,
+                    amount: data.amount,
+                    currency: data.currency,
+                    name: "VogueFit",
+                    description: `${packId} Credits Pack`,
+                    order_id: data.orderId,
+                    prefill: {
+                        name: "Loyal User",
+                        email: "user@example.com"
+                    },
+                    notes: { userId, packId },
+                    handler: async function (response) {
+                        switchView('loading-view');
+                        document.querySelector('#loading-view h1').innerText = 'Verifying Transaction...';
+
+                        const verifyRes = await fetch(`${API_BASE}/api/payment/verify`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                userId,
+                                packId,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature
+                            })
+                        });
+
+                        const verifyData = await verifyRes.json();
+                        if (verifyData.success) {
+                            switchView('success-view');
+                        } else {
+                            showError('Verification failed. If credits are deducted, please contact support.');
+                        }
+                    },
+                    modal: {
+                        ondismiss: function () {
+                            showError('Payment cancelled by user.');
+                        }
+                    },
+                    theme: { color: "#8b5cf6" }
+                };
+
+                const rzp1 = new Razorpay(options);
+                rzp1.on('payment.failed', function (response) {
+                    showError(response.error.description);
+                });
+                rzp1.open();
+
+            } catch (err) {
+                showError(err.message);
+            }
+        }
+
+        function switchView(viewId) {
+            ['loading-view', 'error-view', 'success-view'].forEach(id => {
+                document.getElementById(id).style.display = (id === viewId) ? 'block' : 'none';
+            });
+        }
+
+        function showError(msg) {
+            switchView('error-view');
+            document.getElementById('error-msg').innerText = msg;
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

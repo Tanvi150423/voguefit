@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id         String   @id @default(uuid())
+  title      String
+  price      String
+  brand      String
+  imageUrl   String
+  productUrl String
+  createdAt  DateTime @default(now())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id                    String    @id @default(cuid())
+  email                 String    @unique
+  password              String?   // Hashed password (optional for now to allow migration)
+  walletBalance         Int       @default(0)
+  onboardingCompleted   Boolean   @default(false)
+  signupBonusGiven      Boolean   @default(false)
+  lastRefillAt          DateTime  @default(now())
+  dailySuggestionsCount Int       @default(0)
+  lastSuggestionDate    DateTime  @default(now())
+  preferences           String?
+  createdAt             DateTime  @default(now())
+  products              Product[]
+  subscription          Subscription?
+  transactions          CreditTransaction[]
+  unlocks               PlatformUnlock[]
+}
+
+model PlatformUnlock {
+  id          String   @id @default(cuid())
+  userId      String
+  platform    String   // e.g., 'zara', 'hm', 'uniqlo'
+  unlockedAt  DateTime @default(now())
+  expiresAt   DateTime
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, platform])
+}
+
+model Subscription {
+  id        String    @id @default(cuid())
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id])
+  isActive  Boolean   @default(false)
+  startedAt DateTime  @default(now())
+  expiresAt DateTime?
+}
+
+model CreditTransaction {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  amount    Int
+  type      String   // SIGNUP, WEEKLY, REFERRAL, PURCHASE, USAGE, SUBSCRIPTION_GRANT
+  metadata  String?
+  createdAt DateTime @default(now())
+}

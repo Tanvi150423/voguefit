@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "dailySuggestionsCount" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "lastSuggestionDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

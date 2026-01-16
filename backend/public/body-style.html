@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Perfect Style | VogueFit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --primary-glow: rgba(139, 92, 246, 0.3);
+            --secondary: #f472b6;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #252542;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bg-animation .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--primary);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--secondary);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            width: 400px;
+            height: 400px;
+            background: #4ade80;
+            top: 50%;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.95); }
+            75% { transform: translate(-50px, -20px) scale(1.05); }
+        }
+
+        /* Main Container */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #a78bfa, #f472b6, #fb7185);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* Steps Progress */
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .progress-step.completed {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--success);
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .progress-step.active .step-number {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-step.completed .step-number {
+            background: var(--success);
+        }
+
+        /* Form Container */
+        .form-container {
+            background: var(--bg-card);
+            border-radius: 2rem;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.6s ease-out;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .step-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--text), var(--text-muted));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .step-description {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        /* Body Type Selection */
+        .body-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .body-type-card {
+            background: var(--bg-card-hover);
+            border: 2px solid transparent;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .body-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(139, 92, 246, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .body-type-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .body-type-card:hover::before {
+            opacity: 1;
+        }
+
+        .body-type-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(244, 114, 182, 0.1) 100%);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .body-type-icon {
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .body-type-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .body-type-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Height & Style Selection */
+        .option-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-group {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .option-label {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .option-label span {
+            font-size: 1.2rem;
+        }
+
+        .option-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .option-btn {
+            padding: 0.75rem 1.25rem;
+            background: var(--bg-card-hover);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .option-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--primary);
+        }
+
+        .option-btn.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 1rem;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #a855f7 100%);
+            color: white;
+            box-shadow: 0 4px 20px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px var(--primary-glow);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading State */
+        .loading-container {
+            display: none;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .loading-container.active {
+            display: block;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(139, 92, 246, 0.2);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .loading-subtext {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+
+        /* Results Section */
+        .results-container {
+            display: none;
+        }
+
+        .results-container.active {
+            display: block;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .results-subtitle {
+            color: var(--text-muted);
+        }
+
+        /* Style Guide Card */
+        .style-guide {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(244, 114, 182, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .style-guide-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .style-guide-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .style-guide-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .style-col h4 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .style-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .style-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            font-size: 0.85rem;
+        }
+
+        .style-tag.good {
+            background: rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+        }
+
+        .style-tag.avoid {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        /* Trends Section */
+        .trends-section {
+            margin-bottom: 2rem;
+        }
+
+        .trends-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .trend-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .trend-pill {
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(168, 85, 247, 0.2) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: var(--bg-card-hover);
+        }
+
+        .product-info {
+            padding: 1.25rem;
+        }
+
+        .product-brand {
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .confidence-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.8rem;
+            background: rgba(16, 185, 129, 0.15);
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            color: #6ee7b7;
+        }
+
+        .platform-badge {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: capitalize;
+        }
+
+        .product-reasoning {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Restart Button */
+        .restart-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Auth Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .modal-desc {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-card-hover);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-buttons .btn {
+            flex: 1;
+        }
+
+        /* Error Message */
+        .error-message {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+                border-radius: 1.5rem;
+            }
+
+            .progress-bar {
+                flex-wrap: wrap;
+            }
+
+            .progress-step {
+                font-size: 0.85rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .body-type-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="main-container">
+        <header class="header">
+            <h1 class="logo">VogueFit</h1>
+            <p class="tagline">Discover clothing that flatters your unique body shape</p>
+        </header>
+
+        <!-- Progress Steps -->
+        <div class="progress-bar">
+            <div class="progress-step active" id="step-indicator-1">
+                <span class="step-number">1</span>
+                Body Type
+            </div>
+            <div class="progress-step" id="step-indicator-2">
+                <span class="step-number">2</span>
+                Preferences
+            </div>
+            <div class="progress-step" id="step-indicator-3">
+                <span class="step-number">3</span>
+                Results
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container" id="form-container">
+            <!-- Step 1: Body Type Selection -->
+            <div class="step-content active" id="step-1">
+                <h2 class="step-title">What's your body type?</h2>
+                <p class="step-description">Select the shape that best describes your figure to get personalized recommendations</p>
+
+                <div class="body-type-grid">
+                    <div class="body-type-card" data-type="hourglass">
+                        <span class="body-type-icon">⏳</span>
+                        <div class="body-type-name">Hourglass</div>
+                        <div class="body-type-desc">Balanced bust & hips, defined waist</div>
+                    </div>
+                    <div class="body-type-card" data-type="pear">
+                        <span class="body-type-icon">🍐</span>
+                        <div class="body-type-name">Pear</div>
+                        <div class="body-type-desc">Hips wider than shoulders</div>
+                    </div>
+                    <div class="body-type-card" data-type="apple">
+                        <span class="body-type-icon">🍎</span>
+                        <div class="body-type-name">Apple</div>
+                        <div class="body-type-desc">Fuller midsection, slender limbs</div>
+                    </div>
+                    <div class="body-type-card" data-type="rectangle">
+                        <span class="body-type-icon">📏</span>
+                        <div class="body-type-name">Rectangle</div>
+                        <div class="body-type-desc">Balanced proportions, minimal curves</div>
+                    </div>
+                    <div class="body-type-card" data-type="inverted-triangle">
+                        <span class="body-type-icon">🔻</span>
+                        <div class="body-type-name">Inverted Triangle</div>
+                        <div class="body-type-desc">Shoulders wider than hips</div>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <div></div>
+                    <button class="btn btn-primary" id="next-1" disabled>
+                        Continue
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Height & Style -->
+            <div class="step-content" id="step-2">
+                <h2 class="step-title">Tell us more about you</h2>
+                <p class="step-description">These details help us find the most flattering styles for you</p>
+
+                <div class="option-row">
+                    <div class="option-group">
+                        <div class="option-label">
+                            <span>📐</span> Your Height
+                        </div>
+                        <div class="option-buttons" id="height-options">
+                            <button class="option-btn" data-value="petite">Petite (under 5'3")</button>
+                            <button class="option-btn selected" data-value="medium">Medium (5'3" - 5'7")</button>
+                            <button class="option-btn" data-value="tall">Tall (5'7"+)</button>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <div class="option-label">
+                            <span>✨</span> Style Preference
+                        </div>
+                        <div class="option-buttons" id="style-options">
+                            <button class="option-btn" data-value="casual">Casual</button>
+                            <button class="option-btn" data-value="formal">Formal</button>
+                            <button class="option-btn" data-value="trendy">Trendy</button>
+                            <button class="option-btn" data-value="classic">Classic</button>
+                            <button class="option-btn selected" data-value="any">Any</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn btn-secondary" id="back-2">
+                        <span>←</span>
+                        Back
+                    </button>
+                    <button class="btn btn-primary" id="next-2">
+                        Find My Style
+                        <span>✨</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-container" id="loading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Finding your perfect styles...</div>
+                <div class="loading-subtext">Analyzing trends & your body type</div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-container" id="results">
+            <div class="results-header">
+                <h2 class="results-title">Your Personalized Recommendations</h2>
+                <p class="results-subtitle" id="results-subtitle">Based on your hourglass body type</p>
+            </div>
+
+            <!-- Style Guide -->
+            <div class="style-guide">
+                <h3 class="style-guide-title">
+                    <span>📖</span> Your Style Guide
+                </h3>
+                <div class="style-guide-content">
+                    <div class="style-col">
+                        <h4>✅ Flattering Styles</h4>
+                        <div class="style-tags" id="flattering-tags"></div>
+                    </div>
+                    <div class="style-col">
+                        <h4>❌ Styles to Avoid</h4>
+                        <div class="style-tags" id="avoid-tags"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Reasoning -->
+            <div class="style-guide" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%); border-color: rgba(16, 185, 129, 0.3);">
+                <h3 class="style-guide-title">
+                    <span>🤖</span> AI Stylist Says
+                </h3>
+                <p id="ai-reasoning" style="color: var(--text-muted); line-height: 1.7;">Loading...</p>
+            </div>
+
+            <!-- Matched Trends -->
+            <div class="trends-section" id="trends-section">
+                <h3 class="trends-title">
+                    <span>🔥</span> Matched Trends
+                </h3>
+                <div class="trend-pills" id="trend-pills"></div>
+            </div>
+
+            <!-- Products Grid -->
+            <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem;">
+                <span>👗</span> Recommended For You
+            </h3>
+            <div class="products-grid" id="products-grid"></div>
+
+            <!-- Restart -->
+            <div class="restart-section">
+                <button class="btn btn-secondary" id="restart-btn">
+                    <span>↻</span>
+                    Start Over
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal">
+            <h3 class="modal-title">Quick Sign In</h3>
+            <p class="modal-desc">Create an account or sign in to see personalized recommendations</p>
+            
+            <div class="error-message" id="auth-error"></div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••">
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" id="signup-btn">Sign Up</button>
+                <button class="btn btn-primary" id="login-btn">Log In</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        
+        // State
+        let currentStep = 1;
+        let selectedBodyType = null;
+        let selectedHeight = 'medium';
+        let selectedStyle = 'any';
+        let userId = localStorage.getItem('voguefitUserId');
+
+        // DOM Elements
+        const formContainer = document.getElementById('form-container');
+        const resultsContainer = document.getElementById('results');
+        const loadingContainer = document.getElementById('loading');
+        const authModal = document.getElementById('auth-modal');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Body type selection
+            document.querySelectorAll('.body-type-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.body-type-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedBodyType = card.dataset.type;
+                    document.getElementById('next-1').disabled = false;
+                });
+            });
+
+            // Height options
+            document.getElementById('height-options').addEventListener('click', (e) => {
+                if (e.target.classList.contains('option-btn')) {
+                    document.querySelectorAll('#height-options .option-btn').forEach(b => b.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                    selectedHeight = e.target.dataset.value;
+                }
+            });
+
+            // Style options
+            document.getElementById('style-options').addEventListener('click', (e) => {
+                if (e.target.classList.contains('option-btn')) {
+                    document.querySelectorAll('#style-options .option-btn').forEach(b => b.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                    selectedStyle = e.target.dataset.value;
+                }
+            });
+
+            // Navigation
+            document.getElementById('next-1').addEventListener('click', () => goToStep(2));
+            document.getElementById('back-2').addEventListener('click', () => goToStep(1));
+            document.getElementById('next-2').addEventListener('click', handleSubmit);
+            document.getElementById('restart-btn').addEventListener('click', restart);
+
+            // Auth modal
+            document.getElementById('login-btn').addEventListener('click', () => handleAuth('login'));
+            document.getElementById('signup-btn').addEventListener('click', () => handleAuth('signup'));
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            
+            // Update step content visibility
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`step-${step}`).classList.add('active');
+
+            // Update progress indicators
+            for (let i = 1; i <= 3; i++) {
+                const indicator = document.getElementById(`step-indicator-${i}`);
+                indicator.classList.remove('active', 'completed');
+                if (i < step) {
+                    indicator.classList.add('completed');
+                } else if (i === step) {
+                    indicator.classList.add('active');
+                }
+            }
+        }
+
+        async function handleSubmit() {
+            if (!userId) {
+                // Show auth modal
+                authModal.classList.add('active');
+                return;
+            }
+
+            await fetchRecommendations();
+        }
+
+        async function handleAuth(mode) {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorEl = document.getElementById('auth-error');
+
+            if (!email || !password) {
+                errorEl.textContent = 'Please fill in all fields';
+                errorEl.classList.add('active');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/auth`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, mode })
+                });
+
+                const data = await res.json();
+                
+                if (!data.success) {
+                    errorEl.textContent = data.error || 'Authentication failed';
+                    errorEl.classList.add('active');
+                    return;
+                }
+
+                userId = data.user.id;
+                localStorage.setItem('voguefitUserId', userId);
+                authModal.classList.remove('active');
+                errorEl.classList.remove('active');
+                
+                await fetchRecommendations();
+            } catch (err) {
+                errorEl.textContent = 'Connection error. Please try again.';
+                errorEl.classList.add('active');
+            }
+        }
+
+        async function fetchRecommendations() {
+            // Show loading
+            document.querySelectorAll('.step-content').forEach(c => c.classList.remove('active'));
+            loadingContainer.classList.add('active');
+            goToStep(3);
+
+            try {
+                const res = await fetch(`${API_BASE}/api/body-recommend`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId,
+                        bodyType: selectedBodyType,
+                        height: selectedHeight,
+                        stylePreference: selectedStyle
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to get recommendations');
+                }
+
+                displayResults(data);
+            } catch (err) {
+                console.error('Recommendation error:', err);
+                loadingContainer.innerHTML = `
+                    <div style="color: var(--error); font-size: 3rem; margin-bottom: 1rem;">✕</div>
+                    <div class="loading-text">Something went wrong</div>
+                    <div class="loading-subtext">${err.message}</div>
+                    <button class="btn btn-secondary" onclick="restart()" style="margin-top: 1.5rem;">
+                        Try Again
+                    </button>
+                `;
+            }
+        }
+
+        function displayResults(data) {
+            loadingContainer.classList.remove('active');
+            formContainer.style.display = 'none';
+            resultsContainer.classList.add('active');
+
+            // Update subtitle
+            document.getElementById('results-subtitle').textContent = 
+                `Based on your ${selectedBodyType} body type`;
+
+            // Flattering styles
+            const flatteringTags = document.getElementById('flattering-tags');
+            flatteringTags.innerHTML = data.styleGuide.flattering
+                .map(style => `<span class="style-tag good">${style}</span>`)
+                .join('');
+
+            // Avoid styles
+            const avoidTags = document.getElementById('avoid-tags');
+            avoidTags.innerHTML = data.styleGuide.avoid
+                .map(style => `<span class="style-tag avoid">${style}</span>`)
+                .join('');
+
+            // AI Reasoning
+            document.getElementById('ai-reasoning').textContent = 
+                data.reasoning || 'Our AI analyzed your body type and current trends to find these perfect matches for you.';
+
+            // Trends
+            const trendsSection = document.getElementById('trends-section');
+            const trendPills = document.getElementById('trend-pills');
+            if (data.matchedTrends && data.matchedTrends.length > 0) {
+                trendsSection.style.display = 'block';
+                trendPills.innerHTML = data.matchedTrends
+                    .map(trend => `<span class="trend-pill">${trend}</span>`)
+                    .join('');
+            } else {
+                trendsSection.style.display = 'none';
+            }
+
+            // Products
+            const productsGrid = document.getElementById('products-grid');
+            if (data.products && data.products.length > 0) {
+                productsGrid.innerHTML = data.products.map(product => `
+                    <div class="product-card" onclick="window.open('${product.productUrl}', '_blank')">
+                        <img 
+                            class="product-image" 
+                            src="${product.imageUrl || 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%231a1a2e%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2250%22 fill=%22%23666%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 font-size=%2212%22>No Image</text></svg>'}"
+                            alt="${product.title}"
+                            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%231a1a2e%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2250%22 fill=%22%23666%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 font-size=%2212%22>No Image</text></svg>'"
+                        >
+                        <div class="product-info">
+                            <div class="product-brand">${product.brand || 'Unknown Brand'}</div>
+                            <div class="product-title">${product.title}</div>
+                            <div class="product-price">₹${product.price || '0'}</div>
+                            <div class="product-meta">
+                                <span class="confidence-badge">
+                                    <span>⭐</span>
+                                    ${product.confidenceScore || product.comfortScore || 75}% Match
+                                </span>
+                                <span class="platform-badge">${product.platform || 'Online'}</span>
+                            </div>
+                            ${product.reasoning ? `<div class="product-reasoning">${product.reasoning}</div>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                productsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">👗</div>
+                        <p>No products found. Try adjusting your preferences.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function restart() {
+            currentStep = 1;
+            selectedBodyType = null;
+            selectedHeight = 'medium';
+            selectedStyle = 'any';
+
+            // Reset UI
+            document.querySelectorAll('.body-type-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('next-1').disabled = true;
+            
+            formContainer.style.display = 'block';
+            resultsContainer.classList.remove('active');
+            loadingContainer.classList.remove('active');
+            
+            // Reset loading container HTML in case of error
+            loadingContainer.innerHTML = `
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Finding your perfect styles...</div>
+                <div class="loading-subtext">Analyzing trends & your body type</div>
+            `;
+
+            goToStep(1);
+        }
+    </script>
+</body>
+
+</html>
